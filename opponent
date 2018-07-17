@@ -1,0 +1,60 @@
+#!/bin/bash
+
+
+################################
+#                              #
+# Hearthstone opponent tracker #
+# Made by mlntn                #
+# Battle.net: mlntn#1796       #
+# Reddit: mlntn                #
+#                              #
+################################
+
+
+#### CHANGE THESE BELOW, IF NECESSARY ####
+
+
+# Enter your Battle.net tag to properly identify your opponent
+ME=mlntn#1796
+
+# Do you want to auto-copy your opponent's Battle.net tag? (true/false)
+COPY=true 
+
+# If you installed Hearthstone in a different path, change it here
+HEARTHSTONE=/Applications/Hearthstone
+
+
+#### DON'T CHANGE ANYTHING BELOW THIS ####
+
+
+CONFIG_FILE=~/Library/Preferences/Blizzard/Hearthstone/log.config
+
+if ! grep -Fq "[Power]" $CONFIG_FILE
+then
+	echo '
+[Power]
+LogLevel=1
+FilePrinting=true
+' >> $CONFIG_FILE
+fi 
+
+
+echo "Let's play some Hearthstone!"
+
+tail -Fn0 "$HEARTHSTONE/Logs/Power.Log" | while read line ; do
+        match=$(echo $line | grep PlayerName | grep -v "$ME" | cut -d "=" -f3)
+        if [[ $match ]]; then
+        	echo ''
+        	echo -n "$match"
+            if [[ $COPY == true ]]; then
+            	echo "$match" | pbcopy
+                echo -n " (copied)"
+            fi
+            echo -n ' ... '
+        fi
+
+        result=$(echo $line | grep "GameState.DebugPrintPower() - TAG_CHANGE Entity=$ME tag=PLAYSTATE value=" | cut -d "=" -f4)
+        if [[ $result ]]; then
+        	echo -n "$result "
+        fi
+done
