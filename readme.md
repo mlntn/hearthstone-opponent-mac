@@ -4,7 +4,7 @@ Run this script in your terminal to view your current Hearthstone opponent.
 
 ## Installation
 
-1. 
+1. Download script
 ```bash
 wget https://raw.githubusercontent.com/mlntn/hearthstone-opponent-mac/master/opponent -O opponent
 chmod a+x opponent
@@ -14,11 +14,14 @@ chmod a+x opponent
 
 ## Options
 
-* COPY *
-** Can be ```true``` or ```false``` **
+### COPY
+
+*Can be ```true``` or ```false```*
+
 Auto-copies your opponent's Battle.net tag to your clipboard for easy pasting.
 
-* HEARTHSTONE *
+### HEARTHSTONE
+
 Install directory of Hearthstone if you installed other than the default location.
 
 ## Sample output
